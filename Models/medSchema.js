@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+var mongoosePaginate = require('mongoose-paginate-v2');
 
 const MedSchema = new mongoose.Schema(
     {
@@ -15,5 +16,5 @@ const MedSchema = new mongoose.Schema(
         d_created_on:{ type: Date, default: Date.now }
     }
 )
-
+MedSchema.plugin(mongoosePaginate);
 module.exports = mongoose.model('MedSchema', MedSchema)

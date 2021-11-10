@@ -51,22 +51,20 @@ router.post("/uploadCSV", upload.single("file"), (req, res) => {
 router.get("/GetAll", async (req, res) => {
   var pageNumber = req.query["pageNumber"] ?? 1;
   var pageSize = req.query["pageSize"] ?? 10;
+  console.log(pageSize);
   try {
-    var count = await MongoSchema.count({});
-    var dbData = await MongoSchema.find({}, null, {
-      skip: pageSize * (pageNumber - 1),
-      limit: pageSize,
-    })
-      .select({})
-      .sort({ d_created_on: -1 })
-      .exec();
+    var dbData = await MongoSchema.paginate(
+      {},
+      { offset: pageNumber, limit: pageSize ,customLabels:{totalDocs:'count'}}
+    )
+      // .sort({ d_created_on: -1 })
+    console.log(dbData);
   } catch {
     res
       .status(500)
       .send({ status: false, msg: "error while fetching from db." });
   }
   var resData = {
-    count: count,
     data: dbData,
   };
   res.send({ success: true, msg: "success", data: resData });

@@ -5,7 +5,7 @@ const dbConnect = require('./services/dbconnect');
 const routes = require('./Routes/routes')
 const app = express();
 app.use(cors())
-
+app.options('*', cors())
 app.use(express.urlencoded({ extended: false }))
 
 app.use('/',routes)
